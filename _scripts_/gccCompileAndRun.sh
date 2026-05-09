@@ -30,6 +30,7 @@ for file in "${@:2}"; do
   programs="$programs $(basename "$file")"
 done
 
+# Construct the destination file: This is the first file, but without suffix.
 destFile="$(basename "$2")"
 destFile="${destFile%.*}"
 
@@ -38,24 +39,27 @@ cd "$tempDir"
 command="gcc -Wall -Wextra -std=$gccStd -pedantic -o $destFile$programs"
 cmdReal="gcc -Wall -Wextra -std=$gccStd -fdiagnostics-color=never -pedantic -o $destFile$programs"
 echo "\$ $command"  # We print the command line which will be executed.
-set +o errexit  # Turn off exit-on-error.
+set +o errexit      # Turn off exit-on-error.
 $cmdReal 2>&1
-exitCode="$?"  # Store exit code of program in variable exitCode.
+exitCode="$?"   # Store exit code of program in variable exitCode.
 set -o errexit  # Turn exit-on-error back on.
 
 [ "$exitCode" -eq 0 ] && exitCodeStr="succeeded" || exitCodeStr="failed"
 
 # Finally, we print the result string.
 echo "# gcc $gccVersion $exitCodeStr with exit code $exitCode."
+
+# If GCC failed, we can exit here.
 if [ "$exitCode" -ne 0 ]; then
+  rm -rf "$tempDir"
   exit 0
 fi
 
 command="./$destFile"
 echo "\$ $command"  # We print the command line which will be executed.
-set +o errexit  # Turn off exit-on-error.
+set +o errexit      # Turn off exit-on-error.
 $command 2>&1
-exitCode="$?"  # Store exit code of program in variable exitCode.
+exitCode="$?"   # Store exit code of program in variable exitCode.
 set -o errexit  # Turn exit-on-error back on.
 
 [ "$exitCode" -eq 0 ] && exitCodeStr="succeeded" || exitCodeStr="failed"
@@ -63,4 +67,4 @@ set -o errexit  # Turn exit-on-error back on.
 # Finally, we print the result string.
 echo "# $command $exitCodeStr with exit code $exitCode."
 
-rm -rf "$tempDir"
+rm -rf "$tempDir"  # clean up
