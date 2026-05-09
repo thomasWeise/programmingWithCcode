@@ -3,10 +3,10 @@
 # This is our script for compiling and running of code.
 
 # We enforce strict error handling, i.e., fail on any unexpected error.
-set -o pipefail  # trace errors through pipes
-set -o errtrace  # trace errors through commands and functions
-set -o nounset   # exit if encountering an uninitialized variable
-set -o errexit   # exit if any statement returns a non-0 return value
+#set -o pipefail  # trace errors through pipes
+#set -o errtrace  # trace errors through commands and functions
+#set -o nounset   # exit if encountering an uninitialized variable
+#set -o errexit   # exit if any statement returns a non-0 return value
 
 scriptDir="$(dirname "${BASH_SOURCE[0]}")"
 scriptDir="$(realpath -eP "$scriptDir")"
