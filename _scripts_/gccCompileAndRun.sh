@@ -12,8 +12,9 @@ scriptDir="$(readlink -fe "$0")"
 scriptDir="$(dirname "$scriptDir")"
 scriptDir="$(realpath -eP "$scriptDir")"
 
-gccStd="$($scriptDir/gccStd.sh)"
-gccVersion="$($scriptDir/gccVersion.sh)"
+cd "$scriptDir"
+gccStd="$(./gccStd.sh)"
+gccVersion="$(./gccVersion.sh)"
 
 tempDir="$(mktemp -d)"
 
