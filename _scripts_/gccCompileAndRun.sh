@@ -8,8 +8,10 @@
 #set -o nounset   # exit if encountering an uninitialized variable
 #set -o errexit   # exit if any statement returns a non-0 return value
 
-scriptDir="$(dirname "${BASH_SOURCE[0]}")"
+scriptDir="$(readlink -fe "$0")"
+scriptDir="$(dirname "$scriptDir")"
 scriptDir="$(realpath -eP "$scriptDir")"
+
 gccStd="$($scriptDir/gccStd.sh)"
 gccVersion="$($scriptDir/gccVersion.sh)"
 
