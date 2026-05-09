@@ -10,6 +10,8 @@
 
 scriptDir="$(dirname "${BASH_SOURCE[0]}")"
 scriptDir="$(realpath -eP "$scriptDir")"
+gccStd="$($scriptDir/gccStd.sh)"
+gccVersion="$($scriptDir/gccVersion.sh)"
 
 tempDir="$(mktemp -d)"
 
@@ -25,8 +27,6 @@ destFile="${destFile%.*}"
 
 cd "$tempDir"
 
-gccStd="$($scriptDir/gccStd.sh)"
-gccVersion="$($scriptDir/gccVersion.sh)"
 
 command="gcc -Wall -Wextra -std=$gccStd -pedantic -o $destFile$programs"
 cmdReal="gcc -Wall -Wextra -std=$gccStd -fdiagnostics-color=never -pedantic -o $destFile$programs"
