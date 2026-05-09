@@ -9,13 +9,15 @@ set -o nounset   # exit if encountering an uninitialized variable
 set -o errexit   # exit if any statement returns a non-0 return value
 
 tempDir="$(mktemp -d)"
+
+cd "$1"
 programs=""
-for file in "${@:1}"; do
+for file in "${@:2}"; do
   cp "$file" "$tempDir"
   programs="$programs $(basename "$file")"
 done
 
-destFile="$(basename "$1")"
+destFile="$(basename "$2")"
 destFile="${destFile%.*}"
 
 cd "$tempDir"
