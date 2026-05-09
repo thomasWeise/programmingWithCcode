@@ -3,17 +3,18 @@
 # This is our script for compiling and running of code.
 
 # We enforce strict error handling, i.e., fail on any unexpected error.
-# set -o pipefail  # trace errors through pipes
-# set -o errtrace  # trace errors through commands and functions
-# set -o nounset   # exit if encountering an uninitialized variable
-# set -o errexit   # exit if any statement returns a non-0 return value
+set -o pipefail  # trace errors through pipes
+set -o errtrace  # trace errors through commands and functions
+set -o nounset   # exit if encountering an uninitialized variable
+set -o errexit   # exit if any statement returns a non-0 return value
 
 # Getting base directory for files.
 baseDir="$1"
-baseDir="$(realpath -eP "$baseDir")"
+baseDir="$(realpath -eLP "$baseDir")" || true
 
 # Getting base directory for scripts.
 scriptDir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+scriptDir="$(realpath -eLP "$scriptDir")" || true
 
 # Getting GCC standard and version.
 gccStd="$("$scriptDir/gccStd.sh")"
@@ -24,7 +25,7 @@ tempDir="$(mktemp -d)"
 programs=""
 cd "$baseDir"
 for file in "${@:2}"; do
-  file="$(realpath -eP "$file")"
+  file="$(realpath -eLP "$file")" || true
   cp "$file" "$tempDir"
   programs="$programs $(basename "$file")"
 done
