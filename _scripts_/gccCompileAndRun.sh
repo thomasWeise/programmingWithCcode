@@ -15,9 +15,7 @@ baseDir="$(realpath -eP "$baseDir")"
 echo "$baseDir"
 
 # Getting base directory for scripts.
-scriptDir=`dirname "$0"`; scriptDir=`eval "cd \"$scriptDir\" && pwd"`
-echo "$scriptDir"
-scriptDir="$(realpath -eP "$scriptDir")"
+scriptDir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 echo "$scriptDir"
 
 # Getting GCC standard and version.
