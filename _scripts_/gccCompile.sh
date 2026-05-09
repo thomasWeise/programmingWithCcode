@@ -8,14 +8,23 @@ set -o errtrace  # trace errors through commands and functions
 set -o nounset   # exit if encountering an uninitialized variable
 set -o errexit   # exit if any statement returns a non-0 return value
 
-scriptDir="$(dirname "${BASH_SOURCE[0]}")"
-scriptDir="$(realpath -eP "$scriptDir")"
+# Getting base directory for files.
+baseDir="$1"
+baseDir="$(realpath -eP "$baseDir")"
+
+# Getting base directory for scripts.
+scriptDir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+
+# Getting GCC standard and version.
+gccStd="$("$scriptDir/gccStd.sh")"
+gccVersion="$("$scriptDir/gccVersion.sh")"
 
 tempDir="$(mktemp -d)"
 
-cd "$1"
 programs=""
+cd "$baseDir"
 for file in "${@:2}"; do
+  file="$(realpath -eP "$file")"
   cp "$file" "$tempDir"
   programs="$programs $(basename "$file")"
 done

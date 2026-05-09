@@ -3,26 +3,21 @@
 # This is our script for compiling and running of code.
 
 # We enforce strict error handling, i.e., fail on any unexpected error.
-#set -o pipefail  # trace errors through pipes
-#set -o errtrace  # trace errors through commands and functions
-#set -o nounset   # exit if encountering an uninitialized variable
-#set -o errexit   # exit if any statement returns a non-0 return value
+set -o pipefail  # trace errors through pipes
+set -o errtrace  # trace errors through commands and functions
+set -o nounset   # exit if encountering an uninitialized variable
+set -o errexit   # exit if any statement returns a non-0 return value
 
 # Getting base directory for files.
 baseDir="$1"
-echo "$baseDir"
 baseDir="$(realpath -eP "$baseDir")"
-echo "$baseDir"
 
 # Getting base directory for scripts.
 scriptDir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
-echo "$scriptDir"
 
 # Getting GCC standard and version.
 gccStd="$("$scriptDir/gccStd.sh")"
-echo "$gccStd"
 gccVersion="$("$scriptDir/gccVersion.sh")"
-echo "$gccVersion"
 
 tempDir="$(mktemp -d)"
 
@@ -38,7 +33,6 @@ destFile="$(basename "$2")"
 destFile="${destFile%.*}"
 
 cd "$tempDir"
-
 
 command="gcc -Wall -Wextra -std=$gccStd -pedantic -o $destFile$programs"
 cmdReal="gcc -Wall -Wextra -std=$gccStd -fdiagnostics-color=never -pedantic -o $destFile$programs"
