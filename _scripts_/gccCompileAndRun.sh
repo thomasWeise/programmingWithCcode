@@ -8,19 +8,32 @@
 #set -o nounset   # exit if encountering an uninitialized variable
 #set -o errexit   # exit if any statement returns a non-0 return value
 
-scriptDir="$(readlink -fe "$0")"
-scriptDir="$(dirname "$scriptDir")"
-scriptDir="$(realpath -eP "$scriptDir")"
+# Getting base directory for files.
+baseDir="$1"
+echo "$baseDir"
+baseDir="$(realpath -eP "$baseDir")"
+echo "$baseDir"
 
-cd "$scriptDir"
-gccStd="$(./gccStd.sh)"
-gccVersion="$(./gccVersion.sh)"
+# Getting base directory for scripts.
+scriptDir="$(readlink -fe "$0")"
+echo "$scriptDir"
+scriptDir="$(dirname "$scriptDir")"
+echo "$scriptDir"
+scriptDir="$(realpath -eP "$scriptDir")"
+echo "$scriptDir"
+
+# Getting GCC standard and version.
+gccStd="$("$scriptDir/gccStd.sh")"
+echo "$gccStd"
+gccVersion="$("$scriptDir/gccVersion.sh")"
+echo "$gccVersion"
 
 tempDir="$(mktemp -d)"
 
-cd "$1"
 programs=""
+cd "$baseDir"
 for file in "${@:2}"; do
+  file="$(realpath -eP "$file")"
   cp "$file" "$tempDir"
   programs="$programs $(basename "$file")"
 done
