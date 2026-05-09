@@ -15,9 +15,7 @@ baseDir="$(realpath -eP "$baseDir")"
 echo "$baseDir"
 
 # Getting base directory for scripts.
-scriptDir="$(readlink -fe "$0")"
-echo "$scriptDir"
-scriptDir="$(dirname "$scriptDir")"
+scriptDir=`dirname "$0"`; scriptDir=`eval "cd \"$scriptDir\" && pwd"`
 echo "$scriptDir"
 scriptDir="$(realpath -eP "$scriptDir")"
 echo "$scriptDir"
